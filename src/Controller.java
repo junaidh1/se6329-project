@@ -26,7 +26,7 @@ public class Controller {
 		String pwd = scn.nextLine();
 		//scn.close();
 		if (session.validateCustomer(uid, pwd)) {
-			CustomerDB cDB = new CustomerDB();
+			Customer cDB = new Customer();
 			cname = cDB.getName(uid);
 			System.out.println("\nWelcome to CometsEat " + cname + "\n");
 			return cname;
@@ -39,8 +39,8 @@ public class Controller {
 		System.out.print("Would you like to browse campus restaurants (y/n): ");
 		String response = scn.nextLine();
 		if (response.equals("y") || response.equals("Y")) {
-			BrowseRestaurant myRList = new BrowseRestaurant();
-			return myRList.displayList();
+			RestaurantInventory myRList = new RestaurantInventory();
+			return myRList.getRestaurantList();
 		}
 		return 0;
 	}

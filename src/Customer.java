@@ -1,13 +1,13 @@
 import java.util.Hashtable;
 
-public class CustomerDB {
+public class Customer {
 	private Hashtable<String, Integer> customers = new Hashtable<String, Integer>();
 	private String [][] customerRecords = {{"Miao Miao", "123 Miao Street, Richardson, TX", "miao.miao@utdallas.edu"},
 			{"Mitha Alshammari", "456 Mitha Street, Allen, TX", "mitha.alhammari@utdallas.edu"},
 			{"Junaid Hashmi", "789 Hashmi Street, Richardson, TX", "junaid.hashmi@utdallas.edu"},
 			{"Zilong Wong", "1000 Wong Way, McKinney, TX", "zilong.wong@utdallas.edu"}};
 	
-	CustomerDB() {
+	Customer() {
 		initializeCustomerDB();
 	}
 	
