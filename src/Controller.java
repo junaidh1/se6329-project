@@ -1,13 +1,16 @@
-//import java.io.BufferedReader;
-//import java.io.Console;
-//import java.io.IOException;
-//import java.io.InputStreamReader;
 import java.util.*;
 
 public class Controller {
 	
 	static String cname;
 	static Scanner scn = new Scanner(System.in);
+	
+	static ArrayList<Restaurant> restaurantList = new ArrayList<Restaurant>();
+	static RestaurantInventory myRList = new RestaurantInventory();
+	static ArrayList<Menu> menuList = new ArrayList<Menu>();
+	static Order order = new Order();
+	static OrderRecord orderRecord = new OrderRecord();
+	
 	public static void main(String[] args) {
 		cname = login();
 		
@@ -34,13 +37,12 @@ public class Controller {
 		else
 			return null;
 	}
-
+	
 	private static void browseRestaurants() {
 		System.out.print("Would you like to browse campus restaurants (y/n): ");
 		String response = scn.nextLine();
 	
 		if (response.equals("y") || response.equals("Y")) {
-			RestaurantInventory myRList = new RestaurantInventory();
 			restaurantList = myRList.getRestaurantList();
 			for (int i = 0; i < restaurantList.size(); i++) {
 				String id=String.format("%d",restaurantList.get(i).getRestaurantID());
@@ -113,14 +115,52 @@ public class Controller {
 			qty = Integer.valueOf(scn.nextLine());
 			checkQty(qty, item);
 		} else {
-			addItem(item.getItemID(), qty);
+			addItem(qty, item);
 		}
 	}
 	
 	
-	private static void addItem(int id, int qty) {
+	private static void addItem(int qty, Item item) {
+		order.addItem(qty, item);
+		System.out.println("Add successfully. Do you want to check out your order? (y/n) Press n return to restaurant list: ");
 		
-	}
+		String choice = scn.nextLine();
 
+		if (choice.equals("y") || choice.equals("Y")) {
+			checkOutOrder();
+		} else if ((choice.equals("n") || choice.equals("N"))) {
+			browseRestaurants();
+		}
+	}
+	
+	private static void checkOutOrder() {
+		for (int i = 0; i < order.getItems().size(); i++) {
+			String name = order.getItems().get(i).getName();
+			int qyt = order.getItems().get(i).getQty();
+			double total = order.getItems().get(i).getTotal();
+			System.out.println(name + " | " + qyt + " | $" + total);
+			System.out.println("-------------------------");
+        }
+		System.out.println("Total: $" + order.getTotal());
+		orderRecord.createOrder(order);
+		makePayment();
+	}
+	
+	private static void makePayment() {
+		System.out.println("You need to pay $" + order.getTotal() + " Press p to make payment...");
+		String choice = scn.nextLine();
+
+		if (choice.equals("p") || choice.equals("P")) {
+			ETicket et = new ETicket();
+			et.createETicket(order);
+		}
+		
+		order = new Order();
+		System.out.println("\nPress r return to restaurant list: ");
+		String ans = scn.nextLine();
+		if (ans.equals("r") || ans.equals("R")) {
+			browseRestaurants();
+		}
+	}
 
 }
